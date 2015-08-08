@@ -9,11 +9,19 @@
 
 .link {
   stroke: #999;
-  stroke-opacity: .6;
+  stroke-opacity: .9;
+}
+
+body {
+  font-family: Helvetica, Arial, Sans-Serif;
 }
 
 </style>
 <body>
+<h1>Visualisation of first 1000 Nodes of Western States Power Grid of the United States</h1> 
+<h5>Data Source: <a href="https://networkdata.ics.uci.edu/data.php?id=107">https://networkdata.ics.uci.edu/data.php?id=107</a></h5>
+<h5>Color indicates the number of edges. Place mouse over a node to see details. <br/>
+Unconnected sub graphs can be detected easily: However, this is an artefact of taking only the first 1000 nodes of dataset.</h5>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script>
 

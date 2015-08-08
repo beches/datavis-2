@@ -17,22 +17,43 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script>
 
-var width = 960,
-    height = 500;
+var width = 1200,
+    height = 900;
 
-var color = d3.scale.category20();
+var color = d3.scale.category20c();
 
 var force = d3.layout.force()
-    .charge(-120)
-    .linkDistance(30)
+    .charge(-20)
+    .linkDistance(10)
     .size([width, height]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-d3.json("miserables.json", function(error, graph) {
+d3.json("power1000.json", function(error, graph) {
   if (error) throw error;
+  
+  for( l in graph.links) {
+  	for( n in graph.nodes ) {
+  	  var link = graph.links[l];
+  	  var node = graph.nodes[n];
+  	  if(link.source == node.name) {
+  	    if(!node.group) {
+  	      node.group = 1;
+  	    } else {
+  	      node.group++;
+  	    }
+  	  }
+  	  if(link.target == node.name) {
+  	    if(!node.group) {
+  	      node.group = 1;
+  	    } else {
+  	      node.group++;
+  	    }
+  	  }
+    }
+  }
 
   force
       .nodes(graph.nodes)
@@ -50,11 +71,14 @@ d3.json("miserables.json", function(error, graph) {
     .enter().append("circle")
       .attr("class", "node")
       .attr("r", 5)
-      .style("fill", function(d) { return color(d.group); })
+      .style("fill", function(d) { return color(d.group-1); })
       .call(force.drag);
 
   node.append("title")
-      .text(function(d) { return d.name; });
+      .text(function(d) { 
+      var ed = ", no Edges";
+      if(d.group) ed = ", Number of Edges: "+d.group;
+      return "Node: "+d.name+ed; });
 
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
